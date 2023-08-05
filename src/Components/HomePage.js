@@ -3,9 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchPosts } from "../redux/actions/apiActions";
 import { useNavigate } from "react-router-dom";
 import { addToDetails } from "../redux/actions/detailsActions";
+import SearchBar from "./SearchBar";
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 const HomePage = () => {
     const { loading, posts, error } = useSelector(state => state.posts);
+
     console.log(loading, posts, error)
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -23,6 +26,8 @@ const HomePage = () => {
     if (error) return <h1>{error}</h1>
 
     return (
+        <div>
+        <SearchBar />
         <div className="mainDiv">
             {
                 posts && posts.map((post) => {
@@ -32,10 +37,18 @@ const HomePage = () => {
                         }}>
                             <img id="imgs" src={`https://picsum.photos/200?random=${post.id}`} alt={post.title} />
                             <div className="texts">
-                                <p>User ID: {post.userId}</p>
-                                <p>Title: {post.title.slice(0, 10)}</p>
-                                <p>Body: {post.body.slice(0, 50)}</p>
-                                <p>Read More...</p>
+                                <div className="card-div">
+                                    <div className="card-left-div">
+                                            <div className="card-title">{post.title.slice(0, 10)}</div>
+                                            <div>
+                                            <p className="card-para">Body: {post.body.slice(0, 70)}</p>
+                                            <p className="read-more">Read More...</p>
+                                            </div>
+                                    </div>
+                                    <div className="card-right-div">
+                                        <ChevronRightIcon className="card-icon" />
+                                    </div>
+                                </div>
                             </div>
 
                         </div>
@@ -43,6 +56,7 @@ const HomePage = () => {
                 })
             }
 
+        </div>
         </div>
 
     )
